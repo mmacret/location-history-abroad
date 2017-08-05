@@ -1,6 +1,6 @@
-# location-history-visualizer
+# location-history-visualizer (Polylines)
 
-**Available online: [locationhistoryvisualizer.com/heatmap/](https://locationhistoryvisualizer.com/heatmap/)**
+**Available online: Not yet**
 
 A tool for visualizing your complete, consolidated, collected Google [Location History](https://google.com/locationhistory).
 
