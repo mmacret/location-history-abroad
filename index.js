@@ -1,4 +1,5 @@
 var latlongs;
+var canada = ($.grep(world.features, function(e){return e.id === 'CAN';}))[0];
 
 ( function ( $, L, prettySize ) {
 	var map, heat, polyline,
@@ -50,6 +51,14 @@ var latlongs;
 
 		heat = L.heatLayer( [], heatOptions ).addTo( map );
 		polyline = L.polyline([],{color: 'red', interactive: false}).addTo( map );
+		country = L.geoJson(canada,{
+        fillColor: "green",
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+      }).addTo( map );
 		var type;
 
 		try {
