@@ -1,5 +1,7 @@
+var latlongs;
+
 ( function ( $, L, prettySize ) {
-	var map, heat,
+	var map, heat, polyline,
 		heatOptions = {
 			tileOpacity: 1,
 			heatOpacity: 1,
@@ -47,7 +49,7 @@
     //ga('send', 'event', 'Heatmap', 'upload', undefined, file.size);
 
 		heat = L.heatLayer( [], heatOptions ).addTo( map );
-
+		polyline = L.polyline([],{color: 'red', interactive: false}).addTo( map );
 		var type;
 
 		try {
@@ -76,9 +78,14 @@
 			return oboe.drop;
 		} ).done( function () {
 			status( 'Generating map...' );
-			heat._latlngs = latlngs;
-
-			heat.redraw();
+			//heat._latlngs = latlngs;
+			//latlongs = latlngs;
+			console.log('Avant: '+latlngs.length);
+			latlngs = simplify(latlngs,1,true);
+			console.log('Apres: '+latlngs.length);
+			polyline._latlngs = latlngs;
+			//heat.redraw();
+			polyline.redraw();
 			stageThree(  /* numberProcessed */ latlngs.length );
 
 		} );
