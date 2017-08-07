@@ -1,4 +1,9 @@
-var latlongs;
+var latlongs,map;
+var trips =[];
+var abroad = false;
+var trip =[];
+var finishTrip;
+var endTrip;
 var canada = ($.grep(world.features, function(e){return e.id === 'CAN';}))[0];
 //GeoJSON - [Longitude, Latitude] 
 function isPointInsidePolygon(point, poly) {
@@ -20,7 +25,7 @@ function isPointInsidePolygon(point, poly) {
         };
 
 ( function ( $, L, prettySize ) {
-	var map, heat, polyline,
+	var  heat, polyline,
 		heatOptions = {
 			tileOpacity: 1,
 			heatOpacity: 1,
@@ -102,9 +107,24 @@ function isPointInsidePolygon(point, poly) {
 		os.node( 'locations.*', function ( location ) {
 			var SCALAR_E7 = 0.0000001; // Since Google Takeout stores latlngs as integers
 			let latlng = [ location.latitudeE7 * SCALAR_E7, location.longitudeE7 * SCALAR_E7 ];
-			//console.log(latlng);
+			
 			if(!isPointInsidePolygon(latlng.slice().reverse(),canada.geometry.coordinates)){
-				if ( type === 'json' ) latlngs.push( latlng );
+				if(!abroad){
+					abroad = true;
+					finishTrip = location.timestampMs;
+				}
+				
+				if ( type === 'json' ) trip.push( latlng );
+			}else{
+				if(abroad){
+					//Add trip to list of trips
+					let days = (finishTrip-location.timestampMs)/(1000*3600*24)
+					if(days > 1)
+						trips.push({'finish': finishTrip,'start': location.timestampMs, 'length': days,'coordinates' : trip});
+					trip = [];
+					abroad = false;
+					finishTrip = null;
+				}
 			}
 			
 			
