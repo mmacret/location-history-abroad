@@ -16,9 +16,9 @@ It works directly in your web browser &ndash; no software to download, no packag
 * [browserify](http://browserify.org/), for helping filestream  work properly in the browser
 
 
-## License
+## License (Original Project: <https://github.com/theopolisme/location-history-visualizer>)
 
-Copyright (C) 2014 Theopolisme <theopolismewiki@gmail.com>
+Copyright (C) 2014 Theopolisme <theopolismewiki@gmail.com> 
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
