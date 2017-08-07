@@ -1,14 +1,14 @@
 var latlongs;
 var canada = ($.grep(world.features, function(e){return e.id === 'CAN';}))[0];
-
-function isMarkerInsidePolygon(marker, poly) {
+//GeoJSON - [Longitude, Latitude] 
+function isPointInsidePolygon(point, poly) {
             var inside = false;
-            var x = marker.getLatLng().lat, y = marker.getLatLng().lng;
-            for (var ii=0;ii<poly.getLatLngs().length;ii++){
-                var polyPoints = poly.getLatLngs()[ii];
+            var x = point[1], y = point[0];
+            for (var ii=0;ii<poly.length;ii++){
+                var polyPoints = poly[ii][0];
                 for (var i = 0, j = polyPoints.length - 1; i < polyPoints.length; j = i++) {
-                    var xi = polyPoints[i].lat, yi = polyPoints[i].lng;
-                    var xj = polyPoints[j].lat, yj = polyPoints[j].lng;
+                    var xi = polyPoints[i][1], yi = polyPoints[i][0];
+                    var xj = polyPoints[j][1], yj = polyPoints[j][0];
 
                     var intersect = ((yi > y) != (yj > y))
                         && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
@@ -101,7 +101,13 @@ function isMarkerInsidePolygon(marker, poly) {
 
 		os.node( 'locations.*', function ( location ) {
 			var SCALAR_E7 = 0.0000001; // Since Google Takeout stores latlngs as integers
-			if ( type === 'json' ) latlngs.push( [ location.latitudeE7 * SCALAR_E7, location.longitudeE7 * SCALAR_E7 ] );
+			let latlng = [ location.latitudeE7 * SCALAR_E7, location.longitudeE7 * SCALAR_E7 ];
+			//console.log(latlng);
+			if(!isPointInsidePolygon(latlng.slice().reverse(),canada.geometry.coordinates)){
+				if ( type === 'json' ) latlngs.push( latlng );
+			}
+			
+			
 			return oboe.drop;
 		} ).done( function () {
 			status( 'Generating map...' );
