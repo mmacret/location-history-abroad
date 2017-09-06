@@ -111,16 +111,21 @@ function isPointInsidePolygon(point, poly) {
 			if(!isPointInsidePolygon(latlng.slice().reverse(),canada.geometry.coordinates)){
 				if(!abroad){
 					abroad = true;
-					finishTrip = location.timestampMs;
+					finishTrip = parseFloat(location.timestampMs);
+					//latlngs.push( latlng );
 				}
 				
 				if ( type === 'json' ) trip.push( latlng );
 			}else{
 				if(abroad){
 					//Add trip to list of trips
-					let days = (finishTrip-location.timestampMs)/(1000*3600*24)
-					if(days > 1)
-						trips.push({'finish': finishTrip,'start': location.timestampMs, 'length': days,'coordinates' : trip});
+					let days = (finishTrip-parseFloat(location.timestampMs))/(1000*3600*24)
+					if(days > 1){
+						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip});
+						//latlngs.push( latlng );
+					}else{
+						//latlngs.pop();
+					}
 					trip = [];
 					abroad = false;
 					finishTrip = null;
@@ -133,12 +138,23 @@ function isPointInsidePolygon(point, poly) {
 			status( 'Generating map...' );
 			//heat._latlngs = latlngs;
 			//latlongs = latlngs;
+
+			//generate random color
+			
+			for(var i=0;i<trips.length;i++){
+			 var color;
+			 var r = Math.floor(Math.random() * 255);
+			 var g = Math.floor(Math.random() * 255);
+			 var b = Math.floor(Math.random() * 255);
+			 color= "rgb("+r+" ,"+g+","+ b+")"; 
+			 L.polyline(trips[i].coordinates,{color: color}).bindPopup("Start: "+new Date(trips[i].start)+", End: "+new Date(trips[i].finish)).addTo( map );
+			}
 			console.log('Avant: '+latlngs.length);
-			latlngs = simplify(latlngs,1,true);
+			//latlngs = simplify(latlngs,1,true);
 			console.log('Apres: '+latlngs.length);
-			polyline._latlngs = latlngs;
+			//polyline._latlngs = latlngs;
 			//heat.redraw();
-			polyline.redraw();
+			//polyline.redraw();
 			stageThree(  /* numberProcessed */ latlngs.length );
 
 		} );
