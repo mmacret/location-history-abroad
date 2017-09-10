@@ -72,7 +72,7 @@ function isPointInsidePolygon(point, poly) {
     // Google Analytics event - heatmap upload file
     //ga('send', 'event', 'Heatmap', 'upload', undefined, file.size);
 
-		heat = L.heatLayer( [], heatOptions ).addTo( map );
+		
 		polyline = L.polyline([],{color: 'red', interactive: false}).addTo( map );
 		country = L.geoJson(canada,{
         fillColor: "green",
@@ -122,6 +122,21 @@ function isPointInsidePolygon(point, poly) {
 					let days = (finishTrip-parseFloat(location.timestampMs))/(1000*3600*24)
 					if(days > 1){
 						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip});
+						var color;
+			 			var r = Math.floor(Math.random() * 255);
+			 			var g = Math.floor(Math.random() * 255);
+			 			var b = Math.floor(Math.random() * 255);
+			 			color= "rgb("+r+" ,"+g+","+ b+")"; 
+			 			var path = L.polyline(trip,{color: color,snakingSpeed:200});
+			 			path.bindPopup("Start: "+new Date(parseFloat(location.timestampMs))+", End: "+new Date(finishTrip))
+			 			map.addLayer(path);
+			 			map.fitBounds(path.getBounds(),{animate:true});
+			 			if(trip.length < 10000){
+			 					path.snakeIn();
+			 			}
+			 			
+			 			 
+					
 						//latlngs.push( latlng );
 					}else{
 						//latlngs.pop();
@@ -140,15 +155,23 @@ function isPointInsidePolygon(point, poly) {
 			//latlongs = latlngs;
 
 			//generate random color
-			
+			var routeIn = [];
 			for(var i=0;i<trips.length;i++){
 			 var color;
 			 var r = Math.floor(Math.random() * 255);
 			 var g = Math.floor(Math.random() * 255);
 			 var b = Math.floor(Math.random() * 255);
 			 color= "rgb("+r+" ,"+g+","+ b+")"; 
-			 L.polyline(trips[i].coordinates,{color: color}).bindPopup("Start: "+new Date(trips[i].start)+", End: "+new Date(trips[i].finish)).addTo( map );
+			 var path = L.polyline(trips[i].coordinates,{color: color});
+			// map.addLayer(path);
+			// path.snakeIn();
+			routeIn.push(path);
+			 //L.polyline(trips[i].coordinates,{color: color}).bindPopup("Start: "+new Date(trips[i].start)+", End: "+new Date(trips[i].finish)).addTo( map );
 			}
+			//var route = L.featureGroup(routeIn);
+			//map.addLayer(route);
+			//route.snakeIn();
+
 			console.log('Avant: '+latlngs.length);
 			//latlngs = simplify(latlngs,1,true);
 			console.log('Apres: '+latlngs.length);
@@ -302,8 +325,7 @@ function isPointInsidePolygon(point, poly) {
 			var latlngs;
 			status( 'Generating map...' );
 			latlngs = getLocationDataFromKml( e.target.result );
-			heat._latlngs = latlngs;
-			heat.redraw();
+			
 			stageThree( latlngs.length );
 		}
 		reader.onerror = function () {
