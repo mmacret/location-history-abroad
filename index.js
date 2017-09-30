@@ -25,13 +25,44 @@ function isPointInsidePolygon(point, poly) {
         };
 
 ( function ( $, L, prettySize ) {
-	var  heat, polyline,
+	var  heat, polyline, promise = null,
 		heatOptions = {
 			tileOpacity: 1,
 			heatOpacity: 1,
 			radius: 25,
 			blur: 15
 		};
+
+	function processTrip(map,trip,start,finish){
+		return function(resolve, reject){
+			var color;
+ 			var r = Math.floor(Math.random() * 255);
+ 			var g = Math.floor(Math.random() * 255);
+ 			var b = Math.floor(Math.random() * 255);
+ 			color= "rgb("+r+" ,"+g+","+ b+")"; 
+ 			var path = L.polyline(trip,{color: color,snakingSpeed:200});
+ 			path.bindPopup("Start: "+new Date(start)+", End: "+new Date(finish))
+ 			map.addLayer(path);
+ 			map.fitBounds(path.getBounds(),{animate:true});
+ 			path.addEventListener("snakeend",resolve);
+ 			if(trip.length < 10000){
+ 					path.snakeIn();
+ 			}else{
+ 				resolve();
+ 			}
+ 			console.log("trip: "+start);
+		}
+	}
+
+	function queueTrip(map,trip,start,finish){
+		if(promise == null || promise.isFulfilled()){
+			promise = new Promise(processTrip(map,trip,start,finish));
+		}else{
+			promise = promise.then(function(){
+				return new Promise(processTrip(map,trip,start,finish));
+			});
+		}
+	}
 
 	function status( message ) {
 		$( '#currentStatus' ).text( message );
@@ -122,18 +153,27 @@ function isPointInsidePolygon(point, poly) {
 					let days = (finishTrip-parseFloat(location.timestampMs))/(1000*3600*24)
 					if(days > 1){
 						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip});
-						var color;
-			 			var r = Math.floor(Math.random() * 255);
-			 			var g = Math.floor(Math.random() * 255);
-			 			var b = Math.floor(Math.random() * 255);
-			 			color= "rgb("+r+" ,"+g+","+ b+")"; 
-			 			var path = L.polyline(trip,{color: color,snakingSpeed:200});
-			 			path.bindPopup("Start: "+new Date(parseFloat(location.timestampMs))+", End: "+new Date(finishTrip))
-			 			map.addLayer(path);
-			 			map.fitBounds(path.getBounds(),{animate:true});
-			 			if(trip.length < 10000){
-			 					path.snakeIn();
-			 			}
+						if(false){
+							var color;
+				 			var r = Math.floor(Math.random() * 255);
+				 			var g = Math.floor(Math.random() * 255);
+				 			var b = Math.floor(Math.random() * 255);
+				 			color= "rgb("+r+" ,"+g+","+ b+")"; 
+				 			var path = L.polyline(trip,{color: color,snakingSpeed:200});
+				 			path.bindPopup("Start: "+new Date(parseFloat(location.timestampMs))+", End: "+new Date(finishTrip))
+				 			map.addLayer(path);
+				 			map.fitBounds(path.getBounds(),{animate:true});
+				 			path.addEventListener("snakeend",function(){
+				 				console.log("next!");
+				 			});
+				 			if(trip.length < 10000){
+				 					path.snakeIn();
+				 			}
+						}
+
+						queueTrip(map,trip,parseFloat(location.timestampMs),finishTrip);
+						
+			 			
 			 			
 			 			 
 					
@@ -189,6 +229,7 @@ function isPointInsidePolygon(point, poly) {
 		// Now start working!
 		if ( type === 'json' ) parseJSONFile( file, os );
 		if ( type === 'kml' ) parseKMLFile( file );
+
 	}
 
 	function stageThree ( numberProcessed ) {
