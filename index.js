@@ -152,6 +152,7 @@ function isPointInsidePolygon(point, poly) {
 					//Add trip to list of trips
 					let days = (finishTrip-parseFloat(location.timestampMs))/(1000*3600*24)
 					if(days > 1){
+						trip.reverse();
 						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip});
 						if(false){
 							var color;
