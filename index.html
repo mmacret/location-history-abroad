@@ -29,7 +29,7 @@
             </div>
 
             <!-- Shown in interim while processing is in progress -->
-            <div id="working" class="content-box hidden">
+           <!--  <div id="working_sav" class="content-box hidden">
                 <h2>Processing data...</h2>
                 <div class="loading">
                     <div class="bounce1"></div>
@@ -39,6 +39,16 @@
                 <p><span id="currentStatus">Waking up...</span></p>
                 <p>This may take a while... sit back, get a cup of tea or something.</p>
                 <p><i>Why does it take so long?</i> Depending on how long Google's been tracking your location, you may have hundreds of thousands of [latitude, longitude] pairs, every one of which must be loaded, analyzed, and plotted. That's a lot of dots.</p>
+            </div> -->
+
+            <div id="working" class="processing hidden">
+                <h2>Processing data...</h2>
+                <div class="loading">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+                <p><span id="currentStatus">Waking up...</span></p>
             </div>
 
             <!-- Content displayed once processing complete -->

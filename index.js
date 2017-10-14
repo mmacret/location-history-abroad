@@ -92,6 +92,16 @@ function isPointInsidePolygon(point, poly) {
 			}
 		} );
 
+		// Initialize Canada
+		country = L.geoJson(canada,{
+		        fillColor: "green",
+		        weight: 2,
+		        opacity: 1,
+		        color: 'white',
+		        dashArray: '3',
+		        fillOpacity: 0.7
+		      }).addTo( map );
+
 		// For mobile browsers, allow direct file selection as well
 		$( '#file' ).change( function () {
 			stageTwo( this.files[0] );
@@ -104,15 +114,8 @@ function isPointInsidePolygon(point, poly) {
     //ga('send', 'event', 'Heatmap', 'upload', undefined, file.size);
 
 		
-		polyline = L.polyline([],{color: 'red', interactive: false}).addTo( map );
-		country = L.geoJson(canada,{
-        fillColor: "green",
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-      }).addTo( map );
+		//polyline = L.polyline([],{color: 'red', interactive: false}).addTo( map );
+		
 		var type;
 
 		try {
@@ -151,6 +154,7 @@ function isPointInsidePolygon(point, poly) {
 				if(abroad){
 					//Add trip to list of trips
 					let days = (finishTrip-parseFloat(location.timestampMs))/(1000*3600*24)
+
 					if(days > 1){
 						trip.reverse();
 						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip});
@@ -173,13 +177,10 @@ function isPointInsidePolygon(point, poly) {
 						}
 
 						queueTrip(map,trip,parseFloat(location.timestampMs),finishTrip);
-						
-			 			
-			 			
-			 			 
-					
+	
 						//latlngs.push( latlng );
 					}else{
+						console.log();
 						//latlngs.pop();
 					}
 					trip = [];

@@ -55,21 +55,39 @@ p {
 }
 
 .content {
-	display: table-cell;
+	/*display: table-cell;*/
 	vertical-align: middle;
   padding: 10px 0;
 }
 
 .content-box {
-	margin: 0 auto;
+	/*margin: 0 auto;*/
+  position: absolute;
+  overflow: auto;
 	width: 80%;
 	min-width: 300px;
 	max-width: 600px;
 	background-color: rgba(255,255,255,0.9);
 	padding: 10px;
 	border-radius: 8px;
-  max-height: 85vh;
-  overflow-y: scroll;
+/*  max-height: 85vh;*/
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  margin:auto;
+  height: 420px;
+  /*overflow-y: scroll;*/
+}
+
+.processing {
+  position:absolute;
+  margin: 0 auto;
+  right: 130px;
+  width: 80%;
+  max-width: 200px;
+  background-color: rgba(255,255,255,0.7);
+  border-radius: 8px;
 }
 
 h2 {
