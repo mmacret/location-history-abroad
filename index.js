@@ -184,7 +184,7 @@ function isPointInsidePolygon(point, poly) {
 			 			color= "rgb("+r+" ,"+g+","+ b+")"; 
 						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip,'color':color});
 
-
+						$("#tripTotal").text(trips.length);
 						queueTrip(map,trips.length,trip,parseFloat(location.timestampMs),finishTrip,color);
 	
 						//latlngs.push( latlng );
