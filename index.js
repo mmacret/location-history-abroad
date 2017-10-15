@@ -58,6 +58,12 @@ function isPointInsidePolygon(point, poly) {
  			map.fitBounds(path.getBounds(),{animate:true});
  			path.addEventListener("snakeend",resolve);
 
+ 			$( '#next' ).off('click').on('click', function () {
+ 				path._snakeEnd();
+		        resolve();
+		        return false;
+		    });      
+
  			$( '#startDate' ).text( startDate );
  			$( '#finishDate' ).text( finishDate );
 
