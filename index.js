@@ -133,7 +133,8 @@ function isPointInsidePolygon(point, poly) {
 		$( 'body' ).addClass( 'working' );
 		$( '#intro' ).addClass( 'hidden' );
 		$( '#working' ).removeClass( 'hidden' );
-
+		$( '#trip' ).removeClass( 'hidden' );
+		
 		var latlngs = [];
 
 		var os = new oboe();

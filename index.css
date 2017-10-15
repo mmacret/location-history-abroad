@@ -90,6 +90,41 @@ p {
   border-radius: 8px;
 }
 
+.trip {
+  position:absolute;
+  display:table;
+  margin: 0 auto;
+  left: 10px;
+  top: 110px;
+  width: 80%;
+  max-width: 200px;
+  background-color: rgba(255,255,255,0.7);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.trip h2{
+  margin-bottom: 0;
+  margin-top:10px;
+}
+
+.info {
+  padding: 10px
+  margin-right: 20px;
+  vertical-align:middle;
+  display: inline-block;
+  width: 100%;
+}
+.info svg {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.info div {
+  margin: 5px;
+}
+
 h2 {
 	text-align: center
 }
