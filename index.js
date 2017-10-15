@@ -33,6 +33,16 @@ function isPointInsidePolygon(point, poly) {
 			blur: 15
 		};
 
+
+	function formatDate(timestamp) {
+	  var date = new Date(timestamp);
+	  var day = date.getDate();
+	  var month = date.getMonth();
+	  var year = date.getFullYear();
+
+	  return month+'/'+day+'/'+year;
+	}
+
 	function processTrip(map,trip,start,finish){
 		return function(resolve, reject){
 			var color;
@@ -41,10 +51,16 @@ function isPointInsidePolygon(point, poly) {
  			var b = Math.floor(Math.random() * 255);
  			color= "rgb("+r+" ,"+g+","+ b+")"; 
  			var path = L.polyline(trip,{color: color,snakingSpeed:200});
- 			path.bindPopup("Start: "+new Date(start)+", End: "+new Date(finish))
+ 			var startDate = formatDate(start);
+ 			var finishDate = formatDate(finish);
+ 			path.bindPopup("Start: "+startDate+", End: "+finishDate)
  			map.addLayer(path);
  			map.fitBounds(path.getBounds(),{animate:true});
  			path.addEventListener("snakeend",resolve);
+
+ 			$( '#startDate' ).text( startDate );
+ 			$( '#finishDate' ).text( finishDate );
+
  			if(trip.length < 10000){
  					path.snakeIn();
  			}else{
@@ -134,7 +150,7 @@ function isPointInsidePolygon(point, poly) {
 		$( '#intro' ).addClass( 'hidden' );
 		$( '#working' ).removeClass( 'hidden' );
 		$( '#trip' ).removeClass( 'hidden' );
-		
+
 		var latlngs = [];
 
 		var os = new oboe();
