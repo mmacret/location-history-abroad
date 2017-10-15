@@ -43,13 +43,8 @@ function isPointInsidePolygon(point, poly) {
 	  return month+'/'+day+'/'+year;
 	}
 
-	function processTrip(map,trip,start,finish){
+	function processTrip(map,tripId,trip,start,finish,color){
 		return function(resolve, reject){
-			var color;
- 			var r = Math.floor(Math.random() * 255);
- 			var g = Math.floor(Math.random() * 255);
- 			var b = Math.floor(Math.random() * 255);
- 			color= "rgb("+r+" ,"+g+","+ b+")"; 
  			var path = L.polyline(trip,{color: color,snakingSpeed:200});
  			var startDate = formatDate(start);
  			var finishDate = formatDate(finish);
@@ -64,6 +59,8 @@ function isPointInsidePolygon(point, poly) {
 		        return false;
 		    });      
 
+ 			$("#tripColor").css("background-color", color);
+ 			$( '#tripId' ).text( tripId );
  			$( '#startDate' ).text( startDate );
  			$( '#finishDate' ).text( finishDate );
 
@@ -76,12 +73,12 @@ function isPointInsidePolygon(point, poly) {
 		}
 	}
 
-	function queueTrip(map,trip,start,finish){
+	function queueTrip(map,tripId,trip,start,finish,color){
 		if(promise == null || promise.isFulfilled()){
-			promise = new Promise(processTrip(map,trip,start,finish));
+			promise = new Promise(processTrip(map,tripId,trip,start,finish,color));
 		}else{
 			promise = promise.then(function(){
-				return new Promise(processTrip(map,trip,start,finish));
+				return new Promise(processTrip(map,tripId,trip,start,finish,color));
 			});
 		}
 	}
@@ -180,26 +177,15 @@ function isPointInsidePolygon(point, poly) {
 
 					if(days > 1){
 						trip.reverse();
-						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip});
-						if(false){
-							var color;
-				 			var r = Math.floor(Math.random() * 255);
-				 			var g = Math.floor(Math.random() * 255);
-				 			var b = Math.floor(Math.random() * 255);
-				 			color= "rgb("+r+" ,"+g+","+ b+")"; 
-				 			var path = L.polyline(trip,{color: color,snakingSpeed:200});
-				 			path.bindPopup("Start: "+new Date(parseFloat(location.timestampMs))+", End: "+new Date(finishTrip))
-				 			map.addLayer(path);
-				 			map.fitBounds(path.getBounds(),{animate:true});
-				 			path.addEventListener("snakeend",function(){
-				 				console.log("next!");
-				 			});
-				 			if(trip.length < 10000){
-				 					path.snakeIn();
-				 			}
-						}
+						var color;
+			 			var r = Math.floor(Math.random() * 255);
+			 			var g = Math.floor(Math.random() * 255);
+			 			var b = Math.floor(Math.random() * 255);
+			 			color= "rgb("+r+" ,"+g+","+ b+")"; 
+						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip,'color':color});
 
-						queueTrip(map,trip,parseFloat(location.timestampMs),finishTrip);
+
+						queueTrip(map,trips.length,trip,parseFloat(location.timestampMs),finishTrip,color);
 	
 						//latlngs.push( latlng );
 					}else{
@@ -268,7 +254,7 @@ function isPointInsidePolygon(point, poly) {
 		$( '#working' ).addClass( 'hidden' );
 		//$done.removeClass( 'hidden' );
 		$( 'body' ).addClass( 'map-active' );
-		 activateControls();
+		// activateControls();
 		// Update count
 		$( '#numberProcessed' ).text( numberProcessed.toLocaleString() );
 
