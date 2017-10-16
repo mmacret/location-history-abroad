@@ -153,6 +153,18 @@ function isPointInsidePolygon(point, poly) {
 		$( '#intro' ).addClass( 'hidden' );
 		$( '#working' ).removeClass( 'hidden' );
 		$( '#trip' ).removeClass( 'hidden' );
+		$( '#table' ).click(function(){
+			var table = $( '#table' );
+			if(table.text() === 'Show table'){
+				table.text('Hide table');
+				$( '#tablecontainer' ).removeClass('hidden');
+			}else{
+				table.text('Show table');
+				$( '#tablecontainer' ).addClass('hidden');
+			}
+			
+
+		});
 
 		var latlngs = [];
 
