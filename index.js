@@ -169,8 +169,9 @@ function isPointInsidePolygon(point, poly) {
 
 		});
 		datatable = $('#datatable').DataTable({
+			"dom": 'Bfrtip',
         "order": [[ 1, "asc" ]],
-        "scrollY":        "315px",
+        "scrollY":        "305px",
         "scrollCollapse": false,
         "paging":         false,
         "columns": [
@@ -185,7 +186,12 @@ function isPointInsidePolygon(point, poly) {
 		    { "type": "date"},
 		    { "type": "num"},
 		    { "type": "string"}
-		  ]
+		  ],
+		  "buttons": [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5'
+        ]
     	});
 
 		var latlngs = [];
