@@ -38,17 +38,19 @@ function isPointInsidePolygon(point, poly) {
 	function formatDate(timestamp) {
 	  var date = new Date(timestamp);
 	  var day = date.getDate();
-	  var month = date.getMonth();
+	  var month = date.getMonth()+1;
 	  var year = date.getFullYear();
-
-	  return month+'/'+day+'/'+year;
+	  return [year,
+          (month>9 ? '' : '0') + month,
+          (day>9 ? '' : '0') + day
+         ].join('/');
+	 
 	}
 
-	function processTrip(map,tripId,trip,start,finish,color){
+	function processTrip(map,tripId,trip,startDate,finishDate,color){
 		return function(resolve, reject){
  			var path = L.polyline(trip,{color: color,snakingSpeed:200});
- 			var startDate = formatDate(start);
- 			var finishDate = formatDate(finish);
+ 			
  			path.bindPopup("Start: "+startDate+", End: "+finishDate)
  			map.addLayer(path);
  			map.fitBounds(path.getBounds(),{animate:true});
@@ -70,7 +72,7 @@ function isPointInsidePolygon(point, poly) {
  			}else{
  				resolve();
  			}
- 			console.log("trip: "+start);
+ 			//console.log("trip: "+start);
 		}
 	}
 
@@ -166,7 +168,25 @@ function isPointInsidePolygon(point, poly) {
 			
 
 		});
-		datatable = $('#datatable').DataTable();
+		datatable = $('#datatable').DataTable({
+        "order": [[ 1, "asc" ]],
+        "scrollY":        "315px",
+        "scrollCollapse": false,
+        "paging":         false,
+        "columns": [
+        	{"type" : "num", 
+        	"orderable": false, "createdCell": function (td, cellData, rowData, row, col) {
+														      
+														        $(td).css('background-color', cellData);
+														        $(td).css('color', cellData);
+														      }},
+        	{ "type": "num"},
+		    { "type": "date"},
+		    { "type": "date"},
+		    { "type": "num"},
+		    { "type": "string"}
+		  ]
+    	});
 
 		var latlngs = [];
 
@@ -197,9 +217,18 @@ function isPointInsidePolygon(point, poly) {
 			 			var b = Math.floor(Math.random() * 255);
 			 			color= "rgb("+r+" ,"+g+","+ b+")"; 
 						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip,'color':color});
-
+						var startDate = formatDate(parseFloat(location.timestampMs));
+ 						var finishDate = formatDate(finishTrip);
+						datatable.row.add( [
+					        color,
+					        trips.length,
+					        startDate,
+					        finishDate,
+					        days.toFixed(2),
+					        'Unknown'
+					    ] ).draw( false );
 						$("#tripTotal").text(trips.length);
-						queueTrip(map,trips.length,trip,parseFloat(location.timestampMs),finishTrip,color);
+						queueTrip(map,trips.length,trip,startDate,finishDate,color);
 	
 						//latlngs.push( latlng );
 					}else{
