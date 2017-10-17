@@ -301,6 +301,7 @@ function locate(set,it){
 			for(var i=0;i<trips.length;i++){
 				status("Reverse-geocoding trip "+(i+1)+"/"+trips.length);
 				var where = locate(trips[i].coordinates,10);
+				trips[i].where = where;
 				datatable.cell(i,5).data(where);
 			}
 
