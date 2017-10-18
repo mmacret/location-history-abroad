@@ -6,6 +6,7 @@ var finishTrip;
 var endTrip;
 var canada = ($.grep(world.features, function(e){return e.id === 'CAN';}))[0];
 var datatable;
+var smallTrips = [];
 //GeoJSON - [Longitude, Latitude] 
 function isPointInsidePolygon(point, poly) {
             var inside = false;
@@ -256,8 +257,8 @@ function locate(set,it){
 	
 						//latlngs.push( latlng );
 					}else{
-						console.log();
-						//latlngs.pop();
+						//trip.reverse();
+						//smallTrips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip});
 					}
 					trip = [];
 					abroad = false;
