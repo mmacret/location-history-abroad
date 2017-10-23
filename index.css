@@ -91,6 +91,23 @@ p {
   border-radius: 8px;
 }
 
+.beer{
+  position:absolute;
+  z-index: 9999;
+  bottom:20px;
+  left: 20px;
+}
+
+.beer span {
+  background-color: rgba(255,255,255,0.7);
+  padding: 3px;
+  border-radius: 7px;
+}
+
+.beer form{
+  display:inline-block;
+  vertical-align: middle;
+}
 .trip {
   position:absolute;
   display:table;

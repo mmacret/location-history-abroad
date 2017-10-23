@@ -330,6 +330,7 @@ function locate(set,it){
 		// Change tabs :D
 		$( 'body' ).removeClass( 'working' );
 		$( '#working' ).addClass( 'hidden' );
+		$( '#beer' ).removeClass( 'hidden' );
 		//$done.removeClass( 'hidden' );
 		$( 'body' ).addClass( 'map-active' );
 		// activateControls();
