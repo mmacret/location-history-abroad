@@ -119,6 +119,14 @@
         </div>
     </div> -->
 
+    <div id="feedbackform" style="z-index: 9999;max-height: 530px;" class="content-box hidden">
+        <form method="POST" action="http://formspree.io/countdowntocitizenship@matthieumacret.com" target="_blank">
+          <input type="email" name="email" placeholder="Your email">
+          <textarea name="message" placeholder="Your message"></textarea>
+          <button type="submit">Send</button>
+          <button type="button">Close</button>
+        </form>
+    </div>
     <div id="tablecontainer" style="z-index: 9999;max-height: 530px;" class="content-box hidden">
         <table id="datatable" class="display" cellspacing="0" width="100%">
             <thead>
@@ -146,9 +154,9 @@
                 
             </form>
             <form method="POST" action="https://formspree.io/countdowntocitizenship@matthieumacret.com" target="_blank">
-                      <input type="email" name="email" placeholder="Your email">
-                      <button type="submit">Send</button>
-                </form>
+                    <input type="email" name="email" placeholder="Your email">
+                    <button type="submit">Send</button>
+            </form>
         </div>
      
     </div>
@@ -171,7 +179,14 @@
         </form>
          <span>If you find this app helpful, buy me a beer!</span>
     </div>
+    
+    <div id="feedback">
+        <span>Feedback?</span>
+        <img  src="images/feedback.svg">
 
+    </div>
+    
+  
     <!-- The map, populated by leaflet.js -->
     <div id="map"></div>
 </div>

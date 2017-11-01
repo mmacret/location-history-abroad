@@ -172,9 +172,22 @@ function locate(set,it){
 		$( '#intro' ).addClass( 'hidden' );
 		$( '#working' ).removeClass( 'hidden' );
 		$( '#trip' ).removeClass( 'hidden' );
+		$( '#feedback' ).removeClass( 'hidden' );
+		$( '#feedback' ).click(function(){
+			var table = $( '#table' );
+			if(table.text() === 'Hide table'){
+				table.text('Show table');
+				$( '#tablecontainer' ).addClass('hidden');
+			}
+			$( '#feedbackform' ).removeClass('hidden');
+		});
+		$( '#feedbackform button[type=button]' ).click(function(){
+			$( '#feedbackform' ).addClass('hidden');
+		});
 		$( '#table' ).click(function(){
 			var table = $( '#table' );
 			if(table.text() === 'Show table'){
+				$( '#feedbackform' ).addClass('hidden');
 				table.text('Hide table');
 				$( '#tablecontainer' ).removeClass('hidden');
 			}else{

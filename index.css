@@ -108,6 +108,9 @@ p {
   display:inline-block;
   vertical-align: middle;
 }
+
+
+
 .trip {
   position:absolute;
   display:table;
@@ -408,4 +411,138 @@ div.disclaimer {
     height:20%;
   }
 
+/* Feedback form */
+
+#feedback{
+  position:absolute;
+  z-index: 9999;
+  bottom:25px;
+  right: 10px;
+  display:inline-block;
+  
+}
+
+#feedback span {
+  background-color: rgba(255,255,255,0.7);
+  padding: 3px;
+  border-radius: 7px;
+}
+
+#feedback img{
+  height:40px;
+  background-color: white;
+  border-radius:7px;
+  vertical-align: middle;
+  cursor:pointer;
+}
+
+#feedbackform{
+  padding-right:30px;
+}
+
+#feedbackform form{
+  height: 100%;
+}
+
+#feedbackform textarea{
+  height: 80%;
+}
+
+#feedbackform button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline; }
+
+#feedbackform button,
+input {
+  line-height: normal; }
+
+#feedbackform button,
+select {
+  text-transform: none; }
+
+#feedbackform button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer; }
+
+#feedbackform button[disabled],
+input[disabled] {
+  cursor: default; }
+
+#feedbackform input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0; }
+
+#feedbackform input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box; }
+
+#feedbackform input[type="search"]::-webkit-search-cancel-button,
+#feedbackform input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
+#feedbackform button::-moz-focus-inner, input::-moz-focus-inner {
+  border: 0;
+  padding: 0; }
+
+#feedbackform textarea {
+  overflow: auto;
+  vertical-align: top; }
+
+
+
+#feedbackform input, textarea {
+  font-size: 0.8em;
+  font-family: 'proxima-nova-soft', sans-serif;
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 0.9em;
+  transition: all 0.3s ease-in-out;
+  width: 100%; }
  
+  #feedbackform input:focus, textarea:focus {
+    border-color: #2A735B;
+    outline: none;
+    box-shadow: 0 0 5px 1px #359173; }
+
+#feedbackform input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  margin-right: 6px; }
+
+#feedbackform form input, form textarea {
+  margin-bottom: 0.5em; }
+
+#feedbackform button, a.button {
+  font-size: 1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border: 2px solid #359173;
+  color: #359173;
+  background: transparent;
+  line-height: 1em;
+  padding: 0.6em 0.9em;
+  transition: all 0.3s ease-in-out; }
+  #feedbackform button:hover, a.button:hover {
+    border-color: #2A735B;
+    color: #2A735B; }
+   #feedbackform  button:hover.emphasis, a.button:hover.emphasis {
+      color: white;
+      background-color: #2A735B; }
+  #feedbackform button[disabled], button[disabled]:hover, a.button[disabled], a.button[disabled]:hover {
+    color: #b0e2d2;
+    border-color: #b0e2d2; }
+
+
+
+
