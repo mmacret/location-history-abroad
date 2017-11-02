@@ -216,6 +216,19 @@ function locate(set,it){
 		    { "type": "num"},
 		    { "type": "string"}
 		  ],
+		  "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(),total=0;
+ 
+            
+            for(var i=0;i<trips.length;i++){
+            	total+=trips[i].length;
+            }
+ 
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                total.toFixed(2)+" days"
+            );
+        },
 		  "buttons": [
             'copyHtml5',
             'excelHtml5',
