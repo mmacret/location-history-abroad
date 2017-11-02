@@ -150,7 +150,7 @@ function locate(set,it){
 	function stageTwo ( file ) {
     // Google Analytics event - heatmap upload file
     //ga('send', 'event', 'Heatmap', 'upload', undefined, file.size);
-
+    	ga('send', 'event', 'Travels', 'upload', undefined, file.size);
 		
 		//polyline = L.polyline([],{color: 'red', interactive: false}).addTo( map );
 		
@@ -336,7 +336,7 @@ function locate(set,it){
 	function stageThree ( numberProcessed ) {
     // Google Analytics event - heatmap render
     //ga('send', 'event', 'Heatmap', 'render', undefined, numberProcessed);
-
+    	ga('send','event','Travels','analyzed',undefined,trips.length);
 		//var $done = $( '#done' );
 
 		
@@ -347,8 +347,7 @@ function locate(set,it){
 		//$done.removeClass( 'hidden' );
 		$( 'body' ).addClass( 'map-active' );
 		// activateControls();
-		// Update count
-		$( '#numberProcessed' ).text( numberProcessed.toLocaleString() );
+		
 		
 
     /*$( '#launch' ).click( function () {
