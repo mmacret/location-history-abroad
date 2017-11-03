@@ -9,22 +9,22 @@ var datatable;
 var smallTrips = [];
 //GeoJSON - [Longitude, Latitude] 
 function isPointInsidePolygon(point, poly) {
-            var inside = false;
-            var x = point[1], y = point[0];
-            for (var ii=0;ii<poly.length;ii++){
-                var polyPoints = poly[ii][0];
-                for (var i = 0, j = polyPoints.length - 1; i < polyPoints.length; j = i++) {
-                    var xi = polyPoints[i][1], yi = polyPoints[i][0];
-                    var xj = polyPoints[j][1], yj = polyPoints[j][0];
+	var inside = false;
+	var x = point[1], y = point[0];
+	for (var ii=0;ii<poly.length;ii++){
+		var polyPoints = poly[ii][0];
+		for (var i = 0, j = polyPoints.length - 1; i < polyPoints.length; j = i++) {
+			var xi = polyPoints[i][1], yi = polyPoints[i][0];
+			var xj = polyPoints[j][1], yj = polyPoints[j][0];
 
-                    var intersect = ((yi > y) != (yj > y))
-                        && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-                    if (intersect) inside = !inside;
-                }
-            }
+			var intersect = ((yi > y) != (yj > y))
+			&& (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+			if (intersect) inside = !inside;
+		}
+	}
 
-            return inside;
-        };
+	return inside;
+};
 
 function locate(set,it){
 	for(var j=0;j<it;j++){
@@ -41,70 +41,63 @@ function locate(set,it){
 }
 
 ( function ( $, L, prettySize ) {
-	var  heat, polyline, promise = null,
-		heatOptions = {
-			tileOpacity: 1,
-			heatOpacity: 1,
-			radius: 25,
-			blur: 15
-		};
-
+	var promise = null;
 
 	function formatDate(timestamp) {
-	  var date = new Date(timestamp);
-	  var day = date.getDate();
-	  var month = date.getMonth()+1;
-	  var year = date.getFullYear();
-	  return [year,
-          (month>9 ? '' : '0') + month,
-          (day>9 ? '' : '0') + day
-         ].join('/');
-	 
+		var date = new Date(timestamp);
+		var day = date.getDate();
+		var month = date.getMonth()+1;
+		var year = date.getFullYear();
+		return [year,
+		(month>9 ? '' : '0') + month,
+		(day>9 ? '' : '0') + day
+		].join('/');
+
 	}
 
 	function processTrip(map,tripId,coordinates,startDate,finishDate,color){
 		return function(resolve, reject){
 
- 			var path = L.polyline(coordinates,{color: color,snakingSpeed:200});
- 			
- 			path.bindPopup("Start: "+startDate+", End: "+finishDate)
- 			map.addLayer(path);
- 			map.fitBounds(path.getBounds(),{animate:true});
- 			path.addEventListener("snakeend",resolve);
+			var path = L.polyline(coordinates,{color: color,snakingSpeed:200});
 
- 			$( '#next' ).off('click').on('click', function () {
- 				path._snakeEnd();
-		        resolve();
-		        return false;
-		    });      
+			path.bindPopup("Start: "+startDate+", End: "+finishDate)
+			map.addLayer(path);
+			map.fitBounds(path.getBounds(),{animate:true});
+			path.addEventListener("snakeend",resolve);
 
- 			$("#tripColor").css("background-color", color);
- 			$( '#tripId' ).text( tripId );
- 			$( '#startDate' ).text( startDate );
- 			$( '#finishDate' ).text( finishDate );
+			$( '#next' ).off('click').on('click', function () {
+				path._snakeEnd();
+				resolve();
+				return false;
+			});      
 
- 			if(coordinates.length < 10000){
- 					path.snakeIn();
- 			}else{
- 				resolve();
- 			}
+			$("#tripColor").css("background-color", color);
+			$( '#tripId' ).text( tripId );
+			$( '#startDate' ).text( startDate );
+			$( '#finishDate' ).text( finishDate );
+
+			if(coordinates.length < 10000){
+				path.snakeIn();
+			}else{
+				resolve();
+			}
  			//console.log("trip: "+start);
-		}
-	}
+ 		}
+ 	}
 
-	function queueTrip(map,tripId,coordinates,start,finish,color){
-		if(promise == null || promise.isFulfilled()){
-			promise = new Promise(processTrip(map,tripId,coordinates,start,finish,color));
-		}else{
-			promise = promise.then(function(){
-				return new Promise(processTrip(map,tripId,coordinates,start,finish,color));
-			});
-		}
-	}
+ 	function queueTrip(map,tripId,coordinates,start,finish,color){
+ 		if(promise == null || promise.isFulfilled()){
+ 			promise = new Promise(processTrip(map,tripId,coordinates,start,finish,color));
+ 		}else{
+ 			promise = promise.then(function(){
+ 				return new Promise(processTrip(map,tripId,coordinates,start,finish,color));
+ 			});
+ 		}
+ 	}
 
-	function status( message ) {
-		$( '#currentStatus' ).text( message );
-	}
+ 	function status( message ) {
+ 		$( '#currentStatus' ).text( message );
+ 	}
 	// Start at the beginning
 	stageOne();
 
@@ -114,7 +107,7 @@ function locate(set,it){
 		// Initialize the map
 		map = L.map( 'map' ).setView( [0,0], 2 );
 		L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: 'location-history-visualizer is open source and available <a href="https://github.com/theopolisme/location-history-visualizer">on GitHub</a>. Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors.',
+			attribution: 'Countdown To Citizenship is open source and available <a href="https://github.com/mmacret/location-history-abroad">on GitHub</a>. Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors.',
 			maxZoom: 18,
 			minZoom: 2
 		} ).addTo( map );
@@ -132,13 +125,13 @@ function locate(set,it){
 
 		// Initialize Canada
 		country = L.geoJson(canada,{
-		        fillColor: "green",
-		        weight: 2,
-		        opacity: 1,
-		        color: 'white',
-		        dashArray: '3',
-		        fillOpacity: 0.7
-		      }).addTo( map );
+			fillColor: "green",
+			weight: 2,
+			opacity: 1,
+			color: 'white',
+			dashArray: '3',
+			fillOpacity: 0.7
+		}).addTo( map );
 
 		// For mobile browsers, allow direct file selection as well
 		$( '#file' ).change( function () {
@@ -148,24 +141,21 @@ function locate(set,it){
 	}
 
 	function stageTwo ( file ) {
-    // Google Analytics event - heatmap upload file
-    //ga('send', 'event', 'Heatmap', 'upload', undefined, file.size);
-    	ga('send', 'event', 'Travels', 'upload', undefined, file.size);
-		
-		//polyline = L.polyline([],{color: 'red', interactive: false}).addTo( map );
-		
-		var type;
+   		// Google Analytics event - Travels upload file
+   		ga('send', 'event', 'Travels', 'upload', undefined, file.size);
 
-		try {
-			if ( /\.kml$/i.test( file.name ) ) {
-				type = 'kml';
-			} else {
-				type = 'json';
-			}
-		} catch ( ex ) {
-			status( 'Something went wrong generating your map. Ensure you\'re uploading a Google Takeout JSON file that contains location data and try again, or create an issue on GitHub if the problem persists. ( error: ' + ex.message + ' )' );
-			return;
-		}
+   		var type;
+
+   		try {
+   			if ( /\.kml$/i.test( file.name ) ) {
+   				type = 'kml';
+   			} else {
+   				type = 'json';
+   			}
+   		} catch ( ex ) {
+   			status( 'Something went wrong generating your map. Ensure you\'re uploading a Google Takeout JSON file that contains location data and try again, or create an issue on GitHub if the problem persists. ( error: ' + ex.message + ' )' );
+   			return;
+   		}
 
 		// First, change tabs
 		$( 'body' ).addClass( 'working' );
@@ -199,42 +189,42 @@ function locate(set,it){
 		});
 		datatable = $('#datatable').DataTable({
 			"dom": 'Bfrtip',
-        "order": [[ 1, "asc" ]],
-        "scrollY":        "305px",
-        "scrollCollapse": false,
-        "paging":         false,
-        "columns": [
-        	{"type" : "num", 
-        	"orderable": false, "createdCell": function (td, cellData, rowData, row, col) {
-														      
-														        $(td).css('background-color', cellData);
-														        $(td).css('color', cellData);
-														      }},
-        	{ "type": "num"},
-		    { "type": "date"},
-		    { "type": "date"},
-		    { "type": "num"},
-		    { "type": "string"}
-		  ],
-		  "footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api(),total=0;
- 
-            
-            for(var i=0;i<trips.length;i++){
-            	total+=trips[i].length;
-            }
- 
+			"order": [[ 1, "asc" ]],
+			"scrollY":        "305px",
+			"scrollCollapse": false,
+			"paging":         false,
+			"columns": [
+			{"type" : "num", 
+			"orderable": false, "createdCell": function (td, cellData, rowData, row, col) {
+
+				$(td).css('background-color', cellData);
+				$(td).css('color', cellData);
+			}},
+			{ "type": "num"},
+			{ "type": "date"},
+			{ "type": "date"},
+			{ "type": "num"},
+			{ "type": "string"}
+			],
+			"footerCallback": function ( row, data, start, end, display ) {
+				var api = this.api(),total=0;
+
+
+				for(var i=0;i<trips.length;i++){
+					total+=trips[i].length;
+				}
+
             // Update footer
             $( api.column( 4 ).footer() ).html(
-                total.toFixed(2)+" days"
-            );
+            	total.toFixed(2)+" days"
+            	);
         },
-		  "buttons": [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5'
+        "buttons": [
+        'copyHtml5',
+        'excelHtml5',
+        'csvHtml5'
         ]
-    	});
+    });
 
 		var latlngs = [];
 
@@ -248,7 +238,6 @@ function locate(set,it){
 				if(!abroad){
 					abroad = true;
 					finishTrip = parseFloat(location.timestampMs);
-					//latlngs.push( latlng );
 				}
 				
 				if ( type === 'json' ) trip.push( latlng );
@@ -260,32 +249,28 @@ function locate(set,it){
 					if(days > 1){
 						trip.reverse();
 						var color;
-			 			var r = Math.floor(Math.random() * 255);
-			 			var g = Math.floor(Math.random() * 255);
-			 			var b = Math.floor(Math.random() * 255);
-			 			color= "rgb("+r+" ,"+g+","+ b+")"; 
+						var r = Math.floor(Math.random() * 255);
+						var g = Math.floor(Math.random() * 255);
+						var b = Math.floor(Math.random() * 255);
+						color= "rgb("+r+" ,"+g+","+ b+")"; 
 						trips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip,'color':color});
 						var startDate = formatDate(parseFloat(location.timestampMs));
- 						var finishDate = formatDate(finishTrip);
- 						
- 						//var where = locate(trip[trip.length/2].slice());
- 						//console.log(where);
+						var finishDate = formatDate(finishTrip);
+
+
 						datatable.row.add( [
-					        color,
-					        trips.length,
-					        startDate,
-					        finishDate,
-					        days.toFixed(2),
-					       	'Unknown'
-					    ] ).draw( false );
+							color,
+							trips.length,
+							startDate,
+							finishDate,
+							days.toFixed(2),
+							'Unknown'
+							] ).draw( false );
 						$("#tripTotal").text(trips.length);
 						queueTrip(map,trips.length,trip,startDate,finishDate,color);
-	
-						//latlngs.push( latlng );
-					}else{
-						//trip.reverse();
-						//smallTrips.push({'finish': finishTrip,'start': parseFloat(location.timestampMs), 'length': days,'coordinates' : trip});
+
 					}
+
 					trip = [];
 					abroad = false;
 					finishTrip = null;
@@ -296,33 +281,6 @@ function locate(set,it){
 			return oboe.drop;
 		} ).done( function () {
 			status( 'Generating map...' );
-			//heat._latlngs = latlngs;
-			//latlongs = latlngs;
-
-			//generate random color
-			var routeIn = [];
-			for(var i=0;i<trips.length;i++){
-			 var color;
-			 var r = Math.floor(Math.random() * 255);
-			 var g = Math.floor(Math.random() * 255);
-			 var b = Math.floor(Math.random() * 255);
-			 color= "rgb("+r+" ,"+g+","+ b+")"; 
-			 var path = L.polyline(trips[i].coordinates,{color: color});
-			// map.addLayer(path);
-			// path.snakeIn();
-			routeIn.push(path);
-			 //L.polyline(trips[i].coordinates,{color: color}).bindPopup("Start: "+new Date(trips[i].start)+", End: "+new Date(trips[i].finish)).addTo( map );
-			}
-			//var route = L.featureGroup(routeIn);
-			//map.addLayer(route);
-			//route.snakeIn();
-
-			console.log('Avant: '+latlngs.length);
-			//latlngs = simplify(latlngs,1,true);
-			console.log('Apres: '+latlngs.length);
-			//polyline._latlngs = latlngs;
-			//heat.redraw();
-			//polyline.redraw();
 
 			//Reverse geocoding
 			for(var i=0;i<trips.length;i++){
@@ -347,80 +305,16 @@ function locate(set,it){
 	}
 
 	function stageThree ( numberProcessed ) {
-    // Google Analytics event - heatmap render
-    //ga('send', 'event', 'Heatmap', 'render', undefined, numberProcessed);
-    	ga('send','event','Travels','analyzed',undefined,trips.length);
-		//var $done = $( '#done' );
+    	// Google Analytics event - travel analyzed
+    	ga('send','event','Travels','processed',undefined,numberProcessed);
+    	ga('send','event','Travels','found',undefined,trips.length);
 
-		
 		// Change tabs :D
 		$( 'body' ).removeClass( 'working' );
 		$( '#working' ).addClass( 'hidden' );
 		$( '#beer' ).removeClass( 'hidden' );
-		//$done.removeClass( 'hidden' );
 		$( 'body' ).addClass( 'map-active' );
-		// activateControls();
 		
-		
-
-    /*$( '#launch' ).click( function () {
-      var $email = $( '#email' );
-      if ( $email.is( ':valid' ) ) {
-        $( this ).text( 'Launching... ' );
-        $.post( '/heatmap/submit-email.php', {
-          email: $email.val()
-        } )
-        .always( function () {
-          $( 'body' ).addClass( 'map-active' );
-          $done.fadeOut();
-          activateControls();
-        } );
-      } else {
-        alert( 'Please enter a valid email address to proceed.' );
-      }
-    } );*/
-
-		function activateControls () {
-			var $tileLayer = $( '.leaflet-tile-pane' ),
-				$heatmapLayer = $( '.leaflet-heatmap-layer' ),
-				originalHeatOptions = $.extend( {}, heatOptions ); // for reset
-
-			// Update values of the dom elements
-			function updateInputs () {
-				var option;
-				for ( option in heatOptions ) {
-					if ( heatOptions.hasOwnProperty( option ) ) {
-						document.getElementById( option ).value = heatOptions[option];
-					}
-				}
-			}
-
-			updateInputs();
-
-			$( '.control' ).change( function () {
-				switch ( this.id ) {
-					case 'tileOpacity':
-						$tileLayer.css( 'opacity', this.value );
-						break;
-					case 'heatOpacity':
-						$heatmapLayer.css( 'opacity', this.value );
-						break;
-					default:
-						heatOptions[ this.id ] = Number( this.value );
-						heat.setOptions( heatOptions );
-						break;
-				}
-			} );
-
-			$( '#reset' ).click( function () {
-				$.extend( heatOptions, originalHeatOptions );
-				updateInputs();
-				heat.setOptions( heatOptions );
-				// Reset opacity too
-				$heatmapLayer.css( 'opacity', originalHeatOptions.heatOpacity );
-				$tileLayer.css( 'opacity', originalHeatOptions.tileOpacity );
-			} );
-		}
 	}
 
 	/*
@@ -468,33 +362,33 @@ function locate(set,it){
 
 	/*
         Default behavior for file upload (no chunking)	
-	*/
+        */
 
-	function parseKMLFile( file ) {
-		var fileSize = prettySize( file.size );
-		var reader = new FileReader();
-		reader.onprogress = function ( e ) {
-			var percentLoaded = Math.round( ( e.loaded / e.total ) * 100 );
-			status( percentLoaded + '% of ' + fileSize + ' loaded...' );
-		};
+        function parseKMLFile( file ) {
+        	var fileSize = prettySize( file.size );
+        	var reader = new FileReader();
+        	reader.onprogress = function ( e ) {
+        		var percentLoaded = Math.round( ( e.loaded / e.total ) * 100 );
+        		status( percentLoaded + '% of ' + fileSize + ' loaded...' );
+        	};
 
-		reader.onload = function ( e ) {
-			var latlngs;
-			status( 'Generating map...' );
-			latlngs = getLocationDataFromKml( e.target.result );
-			
-			stageThree( latlngs.length );
-		}
-		reader.onerror = function () {
-			status( 'Something went wrong reading your JSON file. Ensure you\'re uploading a "direct-from-Google" JSON file and try again, or create an issue on GitHub if the problem persists. ( error: ' + reader.error + ' )' );
-		}
-		reader.readAsText( file );
-	}
+        	reader.onload = function ( e ) {
+        		var latlngs;
+        		status( 'Generating map...' );
+        		latlngs = getLocationDataFromKml( e.target.result );
 
-	function getLocationDataFromKml( data ) {
-		var KML_DATA_REGEXP = /<when>( .*? )<\/when>\s*<gx:coord>( \S* )\s( \S* )\s( \S* )<\/gx:coord>/g,
-			locations = [],
-			match = KML_DATA_REGEXP.exec( data );
+        		stageThree( latlngs.length );
+        	}
+        	reader.onerror = function () {
+        		status( 'Something went wrong reading your JSON file. Ensure you\'re uploading a "direct-from-Google" JSON file and try again, or create an issue on GitHub if the problem persists. ( error: ' + reader.error + ' )' );
+        	}
+        	reader.readAsText( file );
+        }
+
+        function getLocationDataFromKml( data ) {
+        	var KML_DATA_REGEXP = /<when>( .*? )<\/when>\s*<gx:coord>( \S* )\s( \S* )\s( \S* )<\/gx:coord>/g,
+        	locations = [],
+        	match = KML_DATA_REGEXP.exec( data );
 
 		// match
 		//  [ 1 ] ISO 8601 timestamp
