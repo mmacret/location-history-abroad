@@ -226,11 +226,12 @@ function locate(set,it){
         ]
     });
 
-		var latlngs = [];
-
+		
+		var processed = 0;
 		var os = new oboe();
 
 		os.node( 'locations.*', function ( location ) {
+			processed++;
 			var SCALAR_E7 = 0.0000001; // Since Google Takeout stores latlngs as integers
 			let latlng = [ location.latitudeE7 * SCALAR_E7, location.longitudeE7 * SCALAR_E7 ];
 			
@@ -290,7 +291,7 @@ function locate(set,it){
 				datatable.cell(i,5).data(where);
 			}
 
-			stageThree(  /* numberProcessed */ latlngs.length );
+			stageThree(  /* numberProcessed */ processed);
 
 		} );
 
@@ -306,6 +307,7 @@ function locate(set,it){
 
 	function stageThree ( numberProcessed ) {
     	// Google Analytics event - travel analyzed
+    	console.log(numberProcessed);
     	ga('send','event','Travels','processed',undefined,numberProcessed);
     	ga('send','event','Travels','found',undefined,trips.length);
 
