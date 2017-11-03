@@ -1,24 +1,30 @@
-# location-history-visualizer (Polylines)
+# location-history-abroad 
 
-**Available online: Not yet**
+**Available online: https://countdowntocitizenship.com**
 
-A tool for visualizing your complete, consolidated, collected Google [Location History](https://google.com/locationhistory).
+A tool to help you count down your absences from Canada using your collected [Location History](https://google.com/locationhistory).
 
 It works directly in your web browser &ndash; no software to download, no packages to install. **Everyone deserves to know what data is being collected about them, without having to fiddle with cryptic pieces of software.**
 
-*location-history-visualizer* takes raw Google Takeout output and produces a heatmap of all of your location data over time, overlaid on an interactive map.
+*location-history-abroad* takes raw Google Takeout output, analyze it and extracts all your absences from Canada. These absences are plotted on a map as polylines as they are discovered. They can also be visualized in a table and downloaded as CSV/Excel file.
 
 ## Packages used
 * [leaflet.js](http://leafletjs.com/), for rendering the interactive map
-* [leaflet.heat](https://github.com/Leaflet/Leaflet.heat), for rendering the heatmap overlay
 * [filestream](https://github.com/DamonOehlman/filestream), for dealing with gigantic Google Takeout files
 * [oboe.js](http://oboejs.com), for processing said gigantic files
-* [browserify](http://browserify.org/), for helping filestream  work properly in the browser
+* [browserify](http://browserify.org/), for helping filestream work properly in the browser
+* [bluebird](http://bluebirdjs.com), a promise library for displaying absences as they are found
+* [datatables](https://datatables.net/), a jQuery plug-in that add advanced controls (export to CSV/Excel, etc) to HTML tables
+* [snakeanim.js](https://github.com/IvanSanchez/Leaflet.Polyline.SnakeAnim), a plugin for Leaflet.js to make polylines animate into existence
+* [countries.geo](https://github.com/johan/world.geo.json), lightweight world country polygon dataset for fast offline reverse-geocoding
 
+## Credit
 
-## License (Original Project: <https://github.com/theopolisme/location-history-visualizer>)
+This project is based on the [location-history-visulizer](https://github.com/theopolisme/location-history-visualizer) open-source project.
 
-Copyright (C) 2014 Theopolisme <theopolismewiki@gmail.com> 
+## License 
+
+Copyright (C) 2017 mmacret <contact@matthieumacret.com> 
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
